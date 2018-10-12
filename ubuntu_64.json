@@ -1,0 +1,65 @@
+{
+    "variables": {
+        "ssh_name": "jaguar",
+        "ssh_pass": "jaguar",
+        "hostname": "xubuntu16_4",
+        "VM": "Ubuntu_64",
+        "DISK_1": "Ubuntu_64_DISK1.vmdk",
+        "DISK_2": "Ubuntu_64_DISK2.vmdk",
+        "DISKS_SIZE": "32768",
+        "MEMORY": "2048",
+        "SATACTRL": "SATA Controller",
+        "IDECTRL": "IDE Controller",
+        "MACADDRESS": "080027492AA4",
+        "VRAM": "256",
+        "NICTYPE": "82540EM",
+        "STORECTRL": "IntelAHCI",
+        "ISO_URL": "http://cdimage.ubuntu.com/xubuntu/releases/16.04/release/xubuntu-16.04.5-desktop-i386.iso",
+        "ISO_ADD_PATH": "file:///P:/users/jaguar.rivero/ISO/VBoxGuestAdditions_5.2.18.iso",
+        "USER": "jaguar",
+        "PASSWORD": "jaguar",
+        "FULL_NAME": "Jaguar Rivero"
+    },
+
+    "builders": [{
+        "type": "virtualbox-iso",
+        "guest_os_type": "Ubuntu_64",
+
+        "vboxmanage": [
+            ["modifyvm", "{{.Name}}", "--ioapic", "on"],
+            ["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"],
+            ["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"],
+            ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
+        ],
+
+        "disk_size" : 10000,
+
+        "iso_url": "{{ user `ISO_URL` }}",
+        "iso_checksum": "a8440ec9a7d667a1226553f1c4bd5a34",
+        "iso_checksum_type": "md5",
+        "guest_additions_path": "{{ user `ISO_ADD_PATH` }}",
+
+
+        "http_directory" : "http_directory",
+        "http_port_min" : 9001,
+        "http_port_max" : 9001,
+
+        "ssh_username": "{{user `USER`}}",
+        "ssh_password": "{{user `PASSWORD`}}",
+        "ssh_wait_timeout": "20m",
+
+        "shutdown_command": "echo {{user `PASSWORD`}} | sudo -S shutdown -P now",
+
+        "boot_command" : [
+            "<esc><esc><enter><wait>",
+            "/install/vmlinuz noapic ",
+            "preseed/url=http://10.42.121.184:8000//preseed.cfg ",
+            "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+            "hostname={{user `hostname`}} ",
+            "fb=false debconf/frontend=noninteractive ",
+            "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+            "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+            "initrd=/install/initrd.gz -- <enter>"
+        ]
+    }]
+}
