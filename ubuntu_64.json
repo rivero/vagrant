@@ -29,7 +29,12 @@
             ["modifyvm", "{{.Name}}", "--ioapic", "on"],
             ["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"],
             ["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"],
-            ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
+            ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"],
+            ["storagectl", "{{.Name}}", "--name", "{{ user `SATACTRL` }}", "--add", "sata", "--controller", "{{ user `STORECTRL`}}"],
+            ["createmedium", "disk", "--filename", "{{ user `DISK_1` }}", "--size", "{{ user `DISKS_SIZE` }}", "--format", "VMDK"],
+            ["createmedium", "disk", "--filename", "{{ user `DISK_2` }}", "--size", "{{ user `DISKS_SIZE` }}", "--format", "VMDK"],
+            ["storageattach" , "{{.Name}}", "--storagectl", "{{ user `SATACTRL` }}", "--port", "0", "--device", "0", "--type", "hdd", "--medium", "{{ user `DISK_1` }}"],
+            ["storageattach" , "{{.Name}}", "--storagectl", "{{ user `SATACTRL` }}", "--port", "0", "--device", "0", "--type", "hdd", "--medium", "{{ user `DISK_2` }}"]
         ],
 
         "disk_size" : 10000,
