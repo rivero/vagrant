@@ -1,7 +1,7 @@
 {
     "variables": {
         "ssh_name": "jaguar",
-        "ssh_pass": "jaguar",
+        "ssh_pass": "1qaz2wsx3edc4rfV",
         "hostname": "xubuntu16_4",
         "VM": "Ubuntu_64",
         "DISK_1": "Ubuntu_64_DISK1.vmdk",
@@ -15,9 +15,10 @@
         "NICTYPE": "82540EM",
         "STORECTRL": "IntelAHCI",
         "ISO_URL": "http://cdimage.ubuntu.com/xubuntu/releases/16.04/release/xubuntu-16.04.5-desktop-i386.iso",
+        "ISO_MD5" : "a8440ec9a7d667a1226553f1c4bd5a34",
         "ISO_ADD_PATH": "file:///P:/users/jaguar.rivero/ISO/VBoxGuestAdditions_5.2.18.iso",
         "USER": "jaguar",
-        "PASSWORD": "jaguar",
+        "PASSWORD": "1qaz2wsx3edc4rfV",
         "FULL_NAME": "Jaguar Rivero"
     },
 
@@ -32,10 +33,10 @@
             ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
        ],
 
-        "disk_size" : 10000,
+        "disk_size" : 40000,
 
         "iso_url": "{{ user `ISO_URL` }}",
-        "iso_checksum": "a8440ec9a7d667a1226553f1c4bd5a34",
+        "iso_checksum": "{{ user `ISO_MD5` }}",
         "iso_checksum_type": "md5",
         "guest_additions_path": "{{ user `ISO_ADD_PATH` }}",
 
@@ -50,16 +51,31 @@
 
         "shutdown_command": "echo {{user `PASSWORD`}} | sudo -S shutdown -P now",
 
+
+        "boot_wait": "45s",
+
         "boot_command" : [
-            "<esc><esc><enter><wait2>",
-            "/install/vmlinuz noapic ",
-            "preseed/url=http://10.42.121.184:8000//preseed.cfg ",
-            "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-            "hostname={{user `hostname`}} ",
-            "fb=false debconf/frontend=noninteractive ",
-            "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
-            "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
-            "initrd=/install/initrd.gz -- <enter>"
+            "<tab><tab><enter><wait5>"
+            ,"<tab><tab><tab><tab><enter><wait5>"
+            ,"<tab><tab><tab><tab><tab><enter><wait5>"
+            ,"<tab><enter><wait10>"
+            ,"<tab><tab><enter><wait10>"
+            ,"<tab><tab><tab><tab><tab><enter><wait5>"
+            ,"{{user `FULL_NAME`}}<tab>"
+            ,"<tab>"
+            ,"{{user `USER`}}<tab>"
+            ,"{{user `PASSWORD`}}<tab>"
+            ,"{{user `PASSWORD`}}<tab>"
+            ,"<tab><tab><tab><enter>"
+            ,"<wait10><wait10><wait10><wait10><wait10><wait10>"
+            ,"<wait10><wait10><wait10><wait10><wait10><wait10>"
+            ,"<wait10><wait10><wait10><wait10><wait10><wait10>"
+            ,"<wait10><wait10><wait10><wait10><wait10><wait10>"
+            ,"<wait10><wait10><wait10><wait10><wait10><wait10>"
+            ,"<enter><wait5><enter>"
+            ,"<wait10>{{user `PASSWORD`}}<enter>"
+
+
         ]
     }]
 }
