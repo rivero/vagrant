@@ -23,19 +23,14 @@
 
     "builders": [{
         "type": "virtualbox-iso",
-        "guest_os_type": "Ubuntu_64",
+        "guest_os_type": "{{ user `VM`}}",
 
         "vboxmanage": [
             ["modifyvm", "{{.Name}}", "--ioapic", "on"],
             ["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"],
             ["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"],
-            ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"],
-            ["storagectl", "{{.Name}}", "--name", "{{ user `SATACTRL` }}", "--add", "sata", "--controller", "{{ user `STORECTRL`}}"],
-            ["createmedium", "disk", "--filename", "{{ user `DISK_1` }}", "--size", "{{ user `DISKS_SIZE` }}", "--format", "VMDK"],
-            ["createmedium", "disk", "--filename", "{{ user `DISK_2` }}", "--size", "{{ user `DISKS_SIZE` }}", "--format", "VMDK"],
-            ["storageattach" , "{{.Name}}", "--storagectl", "{{ user `SATACTRL` }}", "--port", "0", "--device", "0", "--type", "hdd", "--medium", "{{ user `DISK_1` }}"],
-            ["storageattach" , "{{.Name}}", "--storagectl", "{{ user `SATACTRL` }}", "--port", "0", "--device", "0", "--type", "hdd", "--medium", "{{ user `DISK_2` }}"]
-        ],
+            ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
+       ],
 
         "disk_size" : 10000,
 
@@ -45,7 +40,7 @@
         "guest_additions_path": "{{ user `ISO_ADD_PATH` }}",
 
 
-        "http_directory" : "http_directory",
+        "http_directory" : "http",
         "http_port_min" : 9001,
         "http_port_max" : 9001,
 
@@ -56,7 +51,7 @@
         "shutdown_command": "echo {{user `PASSWORD`}} | sudo -S shutdown -P now",
 
         "boot_command" : [
-            "<esc><esc><enter><wait>",
+            "<esc><esc><enter><wait2>",
             "/install/vmlinuz noapic ",
             "preseed/url=http://10.42.121.184:8000//preseed.cfg ",
             "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
