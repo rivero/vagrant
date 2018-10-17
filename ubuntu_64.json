@@ -29,7 +29,7 @@
         ,"SKIP_MACHINE_NAME": "<tab>"
         ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter>"
         ,"ONE_MINUTE": "<wait10><wait10><wait10><wait10><wait10><wait10>"
-        ,"RESTART": "<enter><wait10><enter>"
+        ,"RESTART": "<enter><wait5><enter>"
  },
     "provisioners": [
         {
@@ -97,7 +97,7 @@
           ,"{{user `PASSWORD`}}<wait><tab><wait>"
           ,"{{user `PASSWORD`}}<wait><tab><wait>"
           ,"{{ user `WHO_ARE_YOU` }}"
-          ,"{{ user `ONE_MINUTE` }}","{{ user `ONE_MINUTE` }}","{{ user `ONE_MINUTE` }}","{{ user `ONE_MINUTE` }}","{{ user `ONE_MINUTE` }}","{{ user `ONE_MINUTE` }}"
+          ,"{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}"
           ,"{{ user `RESTART` }}"
           ,"<wait10>{{user `PASSWORD`}}<enter>"
 
