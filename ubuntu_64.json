@@ -21,33 +21,35 @@
         "PASSWORD": "1qaz2wsx3edc4rfV",
         "FULL_NAME": "Jaguar Rivero"
         ,"INSTALL_XUBUNTU": "<tab><tab><enter><wait10>"
-        ,"PREPARING_TO_INSTALL": "<tab><tab><tab><tab><enter><wait5>"
-        ,"INSTALLATION_TYPE": "<tab><tab><tab><tab><tab><enter><wait5>"
-        ,"WRITE_CHANGES_TO_DISK": "<tab><enter><wait10>"
-        ,"WHERE_ARE_YOU": "<tab><tab><enter><wait10>"
-        ,"KEYBOARD_LAYOUT": "<tab><tab><tab><tab><tab><enter><wait5>"
+        ,"PREPARING_TO_INSTALL": "<tab><tab><tab><tab><wait><enter><wait5>"
+        ,"INSTALLATION_TYPE": "<tab><tab><tab><tab><tab><wait><enter><wait5>"
+        ,"WRITE_CHANGES_TO_DISK": "<tab><wait><enter><wait10>"
+        ,"WHERE_ARE_YOU": "<tab><tab><wait><enter><wait10>"
+        ,"KEYBOARD_LAYOUT": "<tab><tab><tab><tab><tab><wait><enter><wait5>"
         ,"SKIP_MACHINE_NAME": "<tab>"
-        ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter>"
+        ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter><wait5>"
         ,"ONE_MINUTE": "<wait10><wait10><wait10><wait10><wait10><wait10>"
         ,"RESTART": "<enter><wait5><enter>"
  },
     "provisioners": [
         {
-          "type": "shell",
-          "skip_clean": "true",
-          "scripts": [
+          "type": "shell"
+          ,"pause_before": "5s"
+          ,"skip_clean": "true"
+          ,"scripts": [
             "scripts/root_setup.sh"
-          ],
-          "override": {
+          ]
+          ,"override": {
             "virtualbox-iso": {
               "execute_command": "echo '{{ user `PASSWORD` }}' | sudo -S sh '{{ .Path }}'"
             }
           }
         },
         {
-          "type": "shell",
-          "skip_clean": "true",
-          "scripts": [
+          "type": "shell"
+          ,"pause_before": "5s"
+          ,"skip_clean": "true"
+          ,"scripts": [
             "scripts/setup.sh"
           ]
         }

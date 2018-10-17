@@ -1,9 +1,8 @@
-#!javascript
 #!/bin/bash
 
 set -e
 
-echo "Instaling for rof"
+echo -e "${0} I AM WORKING " > /tmp/root.log
 
 # Installing vagrant keys
 mkdir ~/.ssh

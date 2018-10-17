@@ -1,4 +1,3 @@
-#!javascript
 #!/bin/bash
 
 set -e
@@ -6,10 +5,12 @@ set -e
 ADMINUSER="admin"
 USER="jrivero"
 
+echo -e "${0} I AM WORKING " > /tmp/root_setup.log
+
 # Updating and Upgrading dependencies
 sudo apt-get update -y -qq > /dev/null
 sudo apt-get upgrade -y -qq > /dev/null
-sudo apt-get install openssh-server
+sudo apt-get install openssh-server -y -qq > /dev/null
 
 # Install necessary libraries for guest additions and Vagrant NFS Share
 sudo apt-get -y -q install linux-headers-$(uname -r) build-essential dkms nfs-common
