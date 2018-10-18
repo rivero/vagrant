@@ -16,44 +16,30 @@
         "STORECTRL": "IntelAHCI",
         "ISO_URL": "http://cdimage.ubuntu.com/xubuntu/releases/16.04/release/xubuntu-16.04.5-desktop-i386.iso",
         "ISO_MD5" : "a8440ec9a7d667a1226553f1c4bd5a34",
-        "ISO_ADD_PATH": "file:///P:/users/jaguar.rivero/ISO/VBoxGuestAdditions_5.2.18.iso",
+        "ISO_ADD_PATH": "http://10.42.121.184:8000/ISO/VBoxGuestAdditions_5.2.18.iso",
         "USER": "jrivero",
         "PASSWORD": "1qaz2wsx3edc4rfV",
         "FULL_NAME": "Jaguar Rivero"
-        ,"INSTALL_XUBUNTU": "<tab><tab><enter><wait10>"
+        ,"INSTALL_XUBUNTU": "<tab><tab><enter><wait5>"
         ,"PREPARING_TO_INSTALL": "<tab><tab><tab><tab><wait><enter><wait5>"
         ,"INSTALLATION_TYPE": "<tab><tab><tab><tab><tab><wait><enter><wait5>"
-        ,"WRITE_CHANGES_TO_DISK": "<tab><wait><enter><wait10>"
+        ,"WRITE_CHANGES_TO_DISK": "<tab><wait><enter><wait10><wait5>"
         ,"WHERE_ARE_YOU": "<tab><tab><wait><enter><wait10>"
         ,"KEYBOARD_LAYOUT": "<tab><tab><tab><tab><tab><wait><enter><wait5>"
         ,"SKIP_MACHINE_NAME": "<tab>"
-        ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter><wait5>"
-        ,"ONE_MINUTE": "<wait10><wait10><wait10><wait10><wait10><wait10>"
+        ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter>"
+        ,"ONE_MINUTE": "<wait60>"
         ,"RESTART": "<enter><wait5><enter>"
  },
     "provisioners": [
         {
-          "type": "shell"
-          ,"pause_before": "5s"
-          ,"skip_clean": "true"
-          ,"scripts": [
-            "scripts/root_setup.sh"
-          ]
-          ,"override": {
-            "virtualbox-iso": {
-              "execute_command": "echo '{{ user `PASSWORD` }}' | sudo -S sh '{{ .Path }}'"
-            }
+            "execute_command": "echo '{{user `PASSWORD` }}' | {{.Vars}} sudo -S -E /bin/bash -eux '{{.Path}}'",
+            "scripts": [
+              "script.sh"
+            ],
+            "type": "shell"
           }
-        },
-        {
-          "type": "shell"
-          ,"pause_before": "5s"
-          ,"skip_clean": "true"
-          ,"scripts": [
-            "scripts/setup.sh"
-          ]
-        }
-      ],
+        ],
     "builders": [{
         "type": "virtualbox-iso",
         "guest_os_type": "{{ user `VM`}}",
@@ -72,19 +58,17 @@
         "iso_checksum_type": "md5",
         "guest_additions_path": "{{ user `ISO_ADD_PATH` }}",
 
-
         "http_directory" : "http",
         "http_port_min" : 9001,
         "http_port_max" : 9001,
 
         "ssh_username": "{{user `USER`}}",
-        "ssh_password": "{{user `PASSWORD`}}",
+        "ssh_password": "{{user `PASSWORD` }}",
         "ssh_wait_timeout": "40m",
 
         "shutdown_command": "echo {{user `PASSWORD`}} | sudo -S shutdown -P now",
 
-
-        "boot_wait": "45s",
+        "boot_wait": "50s",
 
         "boot_command" : [
           "{{ user `INSTALL_XUBUNTU` }}"
@@ -95,15 +79,17 @@
           ,"{{ user `KEYBOARD_LAYOUT` }}"
           ,"{{user `FULL_NAME`}}<tab>"
           ,"{{ user `SKIP_MACHINE_NAME` }}"
-          ,"{{user `USER`}}<wait><tab>"
-          ,"{{user `PASSWORD`}}<wait><tab><wait>"
-          ,"{{user `PASSWORD`}}<wait><tab><wait>"
+          ,"{{user `USER` }}<wait><tab>"
+          ,"{{user `PASSWORD` }}<wait><tab><wait>"
+          ,"{{user `PASSWORD` }}<wait><tab><wait>"
           ,"{{ user `WHO_ARE_YOU` }}"
-          ,"{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}{{ user `ONE_MINUTE` }}"
+          ,"<wait99><wait99><wait99><wait10>"
           ,"{{ user `RESTART` }}"
-          ,"<wait10>{{user `PASSWORD`}}<enter>"
-
-
+          ,"<wait60>"
+          ,"{{user `PASSWORD` }}<wait><enter>"
+          ,"<wait30>"
+          ,"<leftCtrlOn><leftAltOn><tOn><tOff><leftCtrlOff><leftAltOff>"
+          ,"echo echo {{user `PASSWORD` }} | sudo -S apt-get install openssh-server -y<wait><enter>"
         ]
     }]
 }
