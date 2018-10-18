@@ -16,7 +16,7 @@
         "STORECTRL": "IntelAHCI",
         "ISO_URL": "http://cdimage.ubuntu.com/xubuntu/releases/16.04/release/xubuntu-16.04.5-desktop-i386.iso",
         "ISO_MD5" : "a8440ec9a7d667a1226553f1c4bd5a34",
-        "ISO_ADD_PATH": "http://10.42.121.184:8000/ISO/VBoxGuestAdditions_5.2.18.iso",
+        "ISO_ADD_PATH": "ISO/VBoxGuestAdditions_5.2.18.iso",
         "USER": "jrivero",
         "PASSWORD": "1qaz2wsx3edc4rfV",
         "FULL_NAME": "Jaguar Rivero"
