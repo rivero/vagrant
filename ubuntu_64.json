@@ -20,16 +20,16 @@
         "USER": "jrivero",
         "PASSWORD": "1qaz2wsx3edc4rfV",
         "FULL_NAME": "Jaguar Rivero"
-        ,"INSTALL_XUBUNTU": "<tab><tab><enter><wait5>"
-        ,"PREPARING_TO_INSTALL": "<tab><tab><tab><tab><wait><enter><wait5>"
-        ,"INSTALLATION_TYPE": "<tab><tab><tab><tab><tab><wait><enter><wait5>"
-        ,"WRITE_CHANGES_TO_DISK": "<tab><wait><enter><wait10><wait5>"
+        ,"INSTALL_XUBUNTU": "<tab><tab><enter><wait10>"
+        ,"PREPARING_TO_INSTALL": "<tab><tab><tab><tab><wait><enter><wait10>"
+        ,"INSTALLATION_TYPE": "<tab><tab><tab><tab><tab><wait><enter><wait10>"
+        ,"WRITE_CHANGES_TO_DISK": "<tab><wait><enter><wait10><wait10>"
         ,"WHERE_ARE_YOU": "<tab><tab><wait><enter><wait10>"
-        ,"KEYBOARD_LAYOUT": "<tab><tab><tab><tab><tab><wait><enter><wait5>"
+        ,"KEYBOARD_LAYOUT": "<tab><tab><tab><tab><tab><wait><enter><wait10>"
         ,"SKIP_MACHINE_NAME": "<tab>"
-        ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter>"
-        ,"ONE_MINUTE": "<wait60>"
-        ,"RESTART": "<enter><wait5><enter>"
+        ,"WHO_ARE_YOU": "<tab><tab><tab><wait><enter><wait2>"
+        ,"RESTART": "<enter>"
+        ,"OPEN_TERMINAL": "<leftCtrlOn><leftAltOn><tOn><tOff><leftCtrlOff><leftAltOff>"
  },
     "provisioners": [
         {
@@ -38,17 +38,41 @@
               "script.sh"
             ],
             "type": "shell"
+        },
+
+        {
+            "type": "shell",
+            "scripts": [
+              "scripts/root_setup.sh"
+            ],
+            "override": {
+              "virtualbox-iso": {
+                "execute_command": "echo '{{user `PASSWORD` }}' | sudo -S /bin/bash '{{ .Path }}'"
+              }
+            }
+          },
+          {
+            "type": "shell",
+            "scripts": [
+              "scripts/setup.sh"
+            ],
+            "override": {
+              "virtualbox-iso": {
+                "execute_command": "echo '{{user `PASSWORD` }}' | sudo -S /bin/bash '{{ .Path }}'"
+              }
           }
-        ],
+        }
+
+    ],
     "builders": [{
         "type": "virtualbox-iso",
         "guest_os_type": "{{ user `VM`}}",
 
         "vboxmanage": [
-            ["modifyvm", "{{.Name}}", "--ioapic", "on"],
-            ["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"],
-            ["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"],
-            ["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
+            ["modifyvm", "{{.Name}}", "--ioapic", "on"]
+            ,["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"]
+            ,["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"]
+            ,["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
        ],
 
         "disk_size" : 40000,
@@ -79,17 +103,17 @@
           ,"{{ user `KEYBOARD_LAYOUT` }}"
           ,"{{user `FULL_NAME`}}<tab>"
           ,"{{ user `SKIP_MACHINE_NAME` }}"
-          ,"{{user `USER` }}<wait><tab>"
+          ,"{{user `USER` }}<wait><tab><wait>"
           ,"{{user `PASSWORD` }}<wait><tab><wait>"
           ,"{{user `PASSWORD` }}<wait><tab><wait>"
           ,"{{ user `WHO_ARE_YOU` }}"
-          ,"<wait99><wait99><wait99><wait10>"
+          ,"<wait99><wait99><wait99><wait20>"
           ,"{{ user `RESTART` }}"
-          ,"<wait60>"
+          ,"<wait5><enter><wait><enter><wait30>"
           ,"{{user `PASSWORD` }}<wait><enter>"
           ,"<wait30>"
-          ,"<leftCtrlOn><leftAltOn><tOn><tOff><leftCtrlOff><leftAltOff>"
-          ,"echo echo {{user `PASSWORD` }} | sudo -S apt-get install openssh-server -y<wait><enter>"
+          ,"{{ user `OPEN_TERMINAL` }}}<wait5>"
+          ,"echo {{user `PASSWORD` }} | sudo -S apt-get install openssh-server -y<wait><enter>"
         ]
     }]
 }
