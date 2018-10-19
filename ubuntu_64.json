@@ -1,25 +1,25 @@
 {
     "variables": {
-        "ssh_name": "jrivero",
-        "ssh_pass": "1qaz2wsx3edc4rfV",
-        "hostname": "xubuntu16_4",
-        "VM": "Ubuntu_64",
-        "DISK_1": "Ubuntu_64_DISK1.vmdk",
-        "DISK_2": "Ubuntu_64_DISK2.vmdk",
-        "DISKS_SIZE": "32768",
-        "MEMORY": "2048",
-        "SATACTRL": "SATA Controller",
-        "IDECTRL": "IDE Controller",
-        "MACADDRESS": "080027492AA4",
-        "VRAM": "256",
-        "NICTYPE": "82540EM",
-        "STORECTRL": "IntelAHCI",
-        "ISO_URL": "http://cdimage.ubuntu.com/xubuntu/releases/16.04/release/xubuntu-16.04.5-desktop-i386.iso",
-        "ISO_MD5" : "a8440ec9a7d667a1226553f1c4bd5a34",
-        "ISO_ADD_PATH": "ISO/VBoxGuestAdditions_5.2.18.iso",
-        "USER": "jrivero",
-        "PASSWORD": "1qaz2wsx3edc4rfV",
-        "FULL_NAME": "Jaguar Rivero"
+        "ssh_name": "jrivero"
+        ,"ssh_pass": "1qaz2wsx3edc4rfV"
+        ,"hostname": "xubuntu16_4"
+        ,"VM": "Ubuntu_64"
+        ,"DISK_1": "Ubuntu_64_DISK1.vmdk"
+        ,"DISK_2": "Ubuntu_64_DISK2.vmdk"
+        ,"DISKS_SIZE": "32768"
+        ,"MEMORY": "2048"
+        ,"SATACTRL": "SATA Controller"
+        ,"IDECTRL": "IDE Controller"
+        ,"MACADDRESS": "080027492AA4"
+        ,"VRAM": "256"
+        ,"NICTYPE": "82540EM"
+        ,"STORECTRL": "IntelAHCI"
+        ,"ISO_URL": "http://cdimage.ubuntu.com/xubuntu/releases/16.04/release/xubuntu-16.04.5-desktop-i386.iso"
+        ,"ISO_MD5" : "a8440ec9a7d667a1226553f1c4bd5a34"
+        ,"ISO_ADD_PATH": "ISO/VBoxGuestAdditions_5.2.18.iso"
+        ,"USER": "jrivero"
+        ,"PASSWORD": "1qaz2wsx3edc4rfV"
+        ,"FULL_NAME": "Jaguar Rivero"
         ,"INSTALL_XUBUNTU": "<tab><tab><enter><wait10>"
         ,"PREPARING_TO_INSTALL": "<tab><tab><tab><tab><wait><enter><wait10>"
         ,"INSTALLATION_TYPE": "<tab><tab><tab><tab><tab><wait><enter><wait10>"
@@ -35,34 +35,13 @@
         {
             "execute_command": "echo '{{user `PASSWORD` }}' | {{.Vars}} sudo -S -E /bin/bash -eux '{{.Path}}'",
             "scripts": [
-              "script.sh"
+               "scripts/update_upgrade.sh"
+              ,"scripts/setup_ssh.sh"
+              ,"scripts/root_setup.sh"
+              ,"scripts/linux-headers.sh"
             ],
             "type": "shell"
-        },
-
-        {
-            "type": "shell",
-            "scripts": [
-              "scripts/root_setup.sh"
-            ],
-            "override": {
-              "virtualbox-iso": {
-                "execute_command": "echo '{{user `PASSWORD` }}' | sudo -S /bin/bash '{{ .Path }}'"
-              }
-            }
-          },
-          {
-            "type": "shell",
-            "scripts": [
-              "scripts/setup.sh"
-            ],
-            "override": {
-              "virtualbox-iso": {
-                "execute_command": "echo '{{user `PASSWORD` }}' | sudo -S /bin/bash '{{ .Path }}'"
-              }
-          }
         }
-
     ],
     "builders": [{
         "type": "virtualbox-iso",
@@ -73,28 +52,27 @@
             ,["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"]
             ,["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"]
             ,["modifyvm", "{{.Name}}", "--nic1", "nat", "--nictype1", "{{ user `NICTYPE` }}", "--macaddress1", "{{ user `MACADDRESS` }}"]
-       ],
+       ]
 
-        "disk_size" : 40000,
+        ,"disk_size" : 40000
 
-        "iso_url": "{{ user `ISO_URL` }}",
-        "iso_checksum": "{{ user `ISO_MD5` }}",
-        "iso_checksum_type": "md5",
-        "guest_additions_path": "{{ user `ISO_ADD_PATH` }}",
+        ,"iso_url": "{{ user `ISO_URL` }}"
+        ,"iso_checksum": "{{ user `ISO_MD5` }}"
+        ,"iso_checksum_type": "md5"
 
-        "http_directory" : "http",
-        "http_port_min" : 9001,
-        "http_port_max" : 9001,
+        ,"http_directory" : "httpdir"
+        ,"http_port_min" : 9001
+        ,"http_port_max" : 9001
 
-        "ssh_username": "{{user `USER`}}",
-        "ssh_password": "{{user `PASSWORD` }}",
-        "ssh_wait_timeout": "40m",
+        ,"ssh_username": "{{user `USER`}}"
+        ,"ssh_password": "{{user `PASSWORD` }}"
+        ,"ssh_wait_timeout": "40m"
 
-        "shutdown_command": "echo {{user `PASSWORD`}} | sudo -S shutdown -P now",
+        ,"shutdown_command": "echo {{user `PASSWORD`}} | sudo -S shutdown -P now"
 
-        "boot_wait": "50s",
+        ,"boot_wait": "50s"
 
-        "boot_command" : [
+        ,"boot_command" : [
           "{{ user `INSTALL_XUBUNTU` }}"
           ,"{{ user `PREPARING_TO_INSTALL` }}"
           ,"{{ user `INSTALLATION_TYPE` }}"
@@ -109,7 +87,7 @@
           ,"{{ user `WHO_ARE_YOU` }}"
           ,"<wait99><wait99><wait99><wait20>"
           ,"{{ user `RESTART` }}"
-          ,"<wait5><enter><wait><enter><wait30>"
+          ,"<wait5><enter><wait><enter><wait60>"
           ,"{{user `PASSWORD` }}<wait><enter>"
           ,"<wait30>"
           ,"{{ user `OPEN_TERMINAL` }}}<wait5>"
