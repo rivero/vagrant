@@ -3,7 +3,8 @@
         "ssh_name": "jrivero"
         ,"ssh_pass": "1qaz2wsx3edc4rfV"
         ,"hostname": "xubuntu16_4"
-        ,"VM": "Ubuntu_64"
+        ,"OS_TYPE": "Ubuntu_64"
+        ,"VM_NAME": "JAGUAR_VM"
         ,"DISK_1": "Ubuntu_64_DISK1.vmdk"
         ,"DISK_2": "Ubuntu_64_DISK2.vmdk"
         ,"DISKS_SIZE": "32768"
@@ -44,10 +45,11 @@
         }
     ],
     "builders": [{
-        "type": "virtualbox-iso",
-        "guest_os_type": "{{ user `VM`}}",
+        "type": "virtualbox-iso"
+        ,"guest_os_type": "{{ user `OS_TYPE`}}"
+        ,"vm_name": "{{ user `VM_NAME`}}"
 
-        "vboxmanage": [
+        ,"vboxmanage": [
             ["modifyvm", "{{.Name}}", "--ioapic", "on"]
             ,["modifyvm", "{{.Name}}", "--boot1", "dvd", "--boot2", "disk", "--boot3", "none", "--boot4", "none"]
             ,["modifyvm", "{{.Name}}", "--memory", "{{ user `MEMORY` }}", "--vram", "{{ user `VRAM` }}"]
